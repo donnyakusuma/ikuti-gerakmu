@@ -29,6 +29,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6.0.2
+        with:
+          fetch-depth: 0   # full history + tags so setuptools-scm computes the version
 
       - name: Set up Python
         uses: actions/setup-python@v6.2.0
@@ -44,7 +46,7 @@ jobs:
         run: |
           uv venv
           uv pip install flake8 pytest
-          uv pip install git+https://github.com/${{ github.repository }}.git@${{ github.sha }}
+          uv pip install .   # install from the checkout (works for private repos too)
       
       - name: Lint with flake8
         run: |

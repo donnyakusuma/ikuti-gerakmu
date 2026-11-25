@@ -1,8 +1,12 @@
 # Visit the website!
 
+> [!NOTE]
+> **Ikuti Gerakmu** is a copy of [Sports2D](https://github.com/davidpagnon/Sports2D) by David Pagnon (BSD-3-Clause), maintained at [donnyakusuma/ikuti-gerakmu](https://github.com/donnyakusuma/ikuti-gerakmu). The Python package is distributed as `ikuti-gerakmu`, the import name stays `Sports2D`, and both `sports2d` and `ikuti-gerakmu` commands are available.
+
+
 Please visit the website! (after leaving a **⭐star⭐**! 😇)
 
-[https://davidpagnon.github.io/Sports2D](https://davidpagnon.github.io/Sports2D)
+[https://donnyakusuma.github.io/ikuti-gerakmu](https://donnyakusuma.github.io/ikuti-gerakmu)
 
 
 <br>
@@ -12,14 +16,14 @@ Please visit the website! (after leaving a **⭐star⭐**! 😇)
 <br>
 
 
-[![Continuous integration](https://github.com/davidpagnon/sports2d/actions/workflows/continuous-integration.yml/badge.svg?branch=main)](https://github.com/davidpagnon/sports2d/actions/workflows/continuous-integration.yml)
+[![Continuous integration](https://github.com/donnyakusuma/ikuti-gerakmu/actions/workflows/continuous-integration.yml/badge.svg?branch=main)](https://github.com/donnyakusuma/ikuti-gerakmu/actions/workflows/continuous-integration.yml)
 [![PyPI version](https://badge.fury.io/py/Sports2D.svg)](https://badge.fury.io/py/Sports2D)
 \
 [![Downloads](https://static.pepy.tech/badge/sports2d)](https://pepy.tech/project/sports2d)
-[![Stars](https://img.shields.io/github/stars/davidpagnon/sports2d)](https://github.com/davidpagnon/sports2d/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/davidpagnon/sports2d)](https://GitHub.com/davidpagnon/sports2d/forks)
-[![GitHub issues](https://img.shields.io/github/issues/davidpagnon/sports2d)](https://github.com/davidpagnon/sports2d/issues)
-[![GitHub issues-closed](https://img.shields.io/github/issues-closed/davidpagnon/sports2d)](https://GitHub.com/davidpagnon/sports2d/issues?q=is%3Aissue+is%3Aclosed)
+[![Stars](https://img.shields.io/github/stars/donnyakusuma/ikuti-gerakmu)](https://github.com/donnyakusuma/ikuti-gerakmu/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/donnyakusuma/ikuti-gerakmu)](https://github.com/donnyakusuma/ikuti-gerakmu/forks)
+[![GitHub issues](https://img.shields.io/github/issues/donnyakusuma/ikuti-gerakmu)](https://github.com/donnyakusuma/ikuti-gerakmu/issues)
+[![GitHub issues-closed](https://img.shields.io/github/issues-closed/donnyakusuma/ikuti-gerakmu)](https://github.com/donnyakusuma/ikuti-gerakmu/issues?q=is%3Aissue+is%3Aclosed)
 \
 [![status](https://joss.theoj.org/papers/1d525bbb2695c88c6ebbf2297bd35897/status.svg)](https://joss.theoj.org/papers/1d525bbb2695c88c6ebbf2297bd35897)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10576574.svg)](https://zenodo.org/doi/10.5281/zenodo.7903962)
@@ -225,8 +229,8 @@ Open a terminal (*conda, powershell, bash, or zsh*).\
 - OPTION 2: **For developers who want to test and edit the bleeding edge version:**
 
   ```bash
-  git clone --depth 1 https://github.com/davidpagnon/sports2d.git
-  cd sports2d
+  git clone https://github.com/donnyakusuma/ikuti-gerakmu.git
+  cd ikuti-gerakmu
   uv pip install -e .
   ```
 
@@ -324,7 +328,7 @@ The output files are in your current directory:
 > For a full list of the available parameters:
 > 
 > - See [this section](#all-the-parameters) of the documentation, 
-> - Check the [Config_Demo.toml](https://github.com/davidpagnon/Sports2D/blob/main/Sports2D/Demo/Config_demo.toml) file, or 
+> - Check the [Config_Demo.toml](https://github.com/donnyakusuma/ikuti-gerakmu/blob/main/Sports2D/Demo/Config_demo.toml) file, or 
 > - Type `sports2d --help`. Note: if an argument is not specified, it is set to its default value.
 
 > [!TIP]
@@ -657,7 +661,7 @@ sports2d --pose_model BodyWithFeet : `
 
 ## All the parameters
 
-For a full list of the available parameters, have a look at the [Config_Demo.toml](https://github.com/davidpagnon/Sports2D/blob/main/Sports2D/Demo/Config_demo.toml) file or type:
+For a full list of the available parameters, have a look at the [Config_Demo.toml](https://github.com/donnyakusuma/ikuti-gerakmu/blob/main/Sports2D/Demo/Config_demo.toml) file or type:
 
 ``` bash
 sports2d --help
@@ -891,7 +895,7 @@ The ordering method can be 'on_click', 'highest_likelihood', 'largest_size', 'sm
    3. Outliers are rejected with a Hampel filter, 
    4. Results are filtered, by default with a 6 Hz Butterworth filter. 
    
-   All of the above can be configured or deactivated, and other filters such as Kalman, GCV, Gaussian, LOESS, Median, and Butterworth on speeds are also available (see [Config_Demo.toml](https://github.com/davidpagnon/Sports2D/blob/main/Sports2D/Demo/Config_demo.toml))
+   All of the above can be configured or deactivated, and other filters such as Kalman, GCV, Gaussian, LOESS, Median, and Butterworth on speeds are also available (see [Config_Demo.toml](https://github.com/donnyakusuma/ikuti-gerakmu/blob/main/Sports2D/Demo/Config_demo.toml))
 
 7. **Optionally shows** processed images, saves them, or saves them as a video\
   **Optionally plots** pose and angle data before and after processing for comparison\

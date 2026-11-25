@@ -3,15 +3,15 @@ requires = ["setuptools>=45", "setuptools-scm"] # PEP 508 specs
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "sports2d"
+name = "ikuti-gerakmu"
 dynamic = ["version"] # Generate version from git tags
 authors = [
     {name = "David Pagnon", email = "contact@david-pagnon.com"},
 ]
 maintainers = [
-    {name = "David Pagnon", email = "contact@david-pagnon.com"},
+    {name = "donnyakusuma"},
 ]
-description = "Compute 2D human pose and angles from a video or a webcam."
+description = "Ikuti Gerakmu: compute 2D human pose and angles from a video or a webcam (based on Sports2D by David Pagnon)."
 readme = "README.md"
 requires-python = ">=3.11"
 keywords = ["markerless", "kinematics", "OpenPose", "OpenSim", "Mocap", "biomechanics", "sports coaching", "pose estimation", "joint angles", "sports analytics", "kinovea"]
@@ -31,7 +31,7 @@ classifiers = [
     "Topic :: Multimedia :: Graphics",
     "Topic :: Multimedia :: Graphics :: 3D Modeling",
 ]
-urls = {Homepage = "https://github.com/davidpagnon/Sports2D", "Bug Tracker" = "https://github.com/davidpagnon/Sports2D/issues"}
+urls = {Homepage = "https://github.com/donnyakusuma/ikuti-gerakmu", "Bug Tracker" = "https://github.com/donnyakusuma/ikuti-gerakmu/issues", "Upstream" = "https://github.com/davidpagnon/Sports2D"}
 dependencies = [
     "Pose2Sim @ git+https://github.com/perfanalytics/Pose2Sim.git@c6db0ca3c620a7543c5f7960c95309dad87d4e6c"
     # "Pose2Sim @ git+https://github.com/perfanalytics/Pose2Sim.git@main"
@@ -52,3 +52,5 @@ packages = {find = {}}
 [project.scripts]
 sports2d = "Sports2D.Sports2D:main"
 tests_sports2d = "Sports2D.Utilities.tests:test_workflow"
+ikuti-gerakmu = "Sports2D.Sports2D:main"
+tests_ikuti_gerakmu = "Sports2D.Utilities.tests:test_workflow"

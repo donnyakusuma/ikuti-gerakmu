@@ -39,8 +39,8 @@ SCRIPT_DIR  = Path(__file__).resolve().parent
 REPO_ROOT   = SCRIPT_DIR.parent.parent
 README_PATH = REPO_ROOT / "README.md"
 OUTPUT_PATH = SCRIPT_DIR / "index.html"
-REPO_SLUG   = "davidpagnon/Sports2D"     # GitHub "owner/repo"
-DOC_NAME    = "Sports2D"                 # shown in page titles
+REPO_SLUG   = os.environ.get("GITHUB_REPOSITORY", "donnyakusuma/ikuti-gerakmu")  # GitHub "owner/repo" (set automatically in Actions)
+DOC_NAME    = "Ikuti Gerakmu"            # shown in page titles
 VERSIONS_DIR = SCRIPT_DIR / "v"          # one sub-folder per release
 VERSIONS_URL = "v"
 
@@ -404,8 +404,8 @@ HTML_TEMPLATE = """\
                 <a href="https://perfanalytics.github.io/pose2sim/#pose2sim" 
                    class="docs-switch" title="Pose2Sim documentation">Pose2Sim</a>
                 <span class="docs-switch-sep">|</span>
-                <a href="https://davidpagnon.github.io/Sports2D/#sports2d"
-                   class="docs-switch active" title="Sports2D documentation">Sports2D</a>
+                <a href="https://donnyakusuma.github.io/ikuti-gerakmu/#sports2d"
+                   class="docs-switch active" title="Ikuti Gerakmu documentation">Ikuti Gerakmu</a>
                 <span class="docs-switch-sep">|</span>
                 <a href="https://davidpagnon.github.io/Pose2Sim_Blender/#pose2sim-blender"
                    class="docs-switch" title="Pose2Sim Blender add-on documentation">Blender add-on</a>
@@ -440,7 +440,7 @@ HTML_TEMPLATE = """\
         <!-- Footer -->
         <footer class="footer">
             <div class="footer-content">
-                <p><a href="https://github.com/davidpagnon/Sports2D" target="_blank">Sports2D GitHub</a> (⭐Star it⭐ or ❤️<a href="https://github.com/sponsors/davidpagnon" target="_blank">Sponsor it!</a>❤️) &bull;
+                <p><a href="https://github.com/donnyakusuma/ikuti-gerakmu" target="_blank">Ikuti Gerakmu GitHub</a> (based on <a href="https://github.com/davidpagnon/Sports2D" target="_blank">Sports2D</a> by David Pagnon) &bull;
                    <a href="#how-to-cite">Cite Sports2D</a>
                 </p>
                 <p>Open-source markerless motion capture &bull; BSD-3-Clause License</p>

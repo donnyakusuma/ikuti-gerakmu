@@ -4,5 +4,5 @@
 import sys
 from importlib.metadata import version
 
-__version__ = version("sports2d")
+__version__ = version("ikuti-gerakmu")
 VERSION = __version__
