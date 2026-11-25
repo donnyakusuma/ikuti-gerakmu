@@ -5,6 +5,7 @@ on:
     paths:
       - 'Content/paper.md'
       - 'Content/paper.bib'
+  workflow_dispatch:
 
 jobs:
   paper:

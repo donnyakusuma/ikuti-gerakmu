@@ -11,6 +11,7 @@ name: Upload Python Package to PyPi upon release
 on:
   release:
     types: [published]
+  workflow_dispatch:   # manual run: builds the package (uploads only if PYPI_API_TOKEN is set)
 
 permissions:
   contents: read
