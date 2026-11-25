@@ -1,9 +1,15 @@
 name: Sync to Hugging Face Space
-# Mirrors the Sports2D/ package folder to your Hugging Face Space on every push to main.
+# Keeps your Hugging Face Space running the latest code of this repo.
+# The Space installs the package from GitHub through its requirements.txt, so on every
+# push to main this workflow points requirements.txt at the pushed commit; Hugging Face
+# then rebuilds the Space automatically. (Copying Sports2D/* into the Space root, as the
+# original workflow did, would shadow the installed package and break `from Sports2D import Sports2D`.)
+#
 # Setup (Settings > Secrets and variables > Actions):
-#   - secret   HUGGINGFACE_TOKEN : a Hugging Face write token
+#   - secret   HUGGINGFACE_TOKEN : a Hugging Face token with write access
 #   - variable HF_SPACE          : the Space id, e.g. "your-hf-username/ikuti-gerakmu"
-# If either is missing, the job is skipped with a warning instead of failing.
+# Create the Space by duplicating https://huggingface.co/spaces/DavidPagnon/sports2d
+# (button "Duplicate this Space"). If the secret or variable is missing, the job is skipped.
 on:
   push:
     branches: [ main ]
@@ -15,7 +21,6 @@ jobs:
       HF_TOKEN: ${{ secrets.HUGGINGFACE_TOKEN }}
       HF_SPACE: ${{ vars.HF_SPACE }}
     steps:
-      - uses: actions/checkout@v4
       - name: Check Hugging Face configuration
         id: cfg
         run: |
@@ -25,15 +30,24 @@ jobs:
           else
             echo "ok=true" >> "$GITHUB_OUTPUT"
           fi
-      - name: Push to Hugging Face Space
+      - name: Point the Space at this commit
         if: steps.cfg.outputs.ok == 'true'
         run: |
+          export GIT_LFS_SKIP_SMUDGE=1   # do not download the demo videos
           git clone "https://user:${HF_TOKEN}@huggingface.co/spaces/${HF_SPACE}" hf_space
           cd hf_space
-          git config --global user.name "${{ github.actor }}"
-          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-          cp -r ../Sports2D/* .
-          git add .
-          git diff --cached --quiet && { echo "Nothing to sync."; exit 0; }
-          git commit -m "Sync from GitHub ${{ github.sha }}"
-          git push "https://user:${HF_TOKEN}@huggingface.co/spaces/${HF_SPACE}"
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          REQ="git+https://github.com/${{ github.repository }}.git@${{ github.sha }}#egg=ikuti-gerakmu"
+          if [ -f requirements.txt ]; then
+            # replace the line that installs Sports2D / ikuti-gerakmu, keep everything else
+            grep -v -i -E '^[^#]*(sports2d|ikuti-gerakmu)' requirements.txt > requirements.new || true
+            { echo "$REQ"; cat requirements.new; } > requirements.txt
+            rm requirements.new
+          else
+            echo "$REQ" > requirements.txt
+          fi
+          git add requirements.txt
+          git diff --cached --quiet && { echo "Space already up to date."; exit 0; }
+          git commit -m "Sync from GitHub ${{ github.repository }}@${{ github.sha }}"
+          git push "https://user:${HF_TOKEN}@huggingface.co/spaces/${HF_SPACE}" HEAD:main
