@@ -40,6 +40,8 @@ REPO_ROOT   = SCRIPT_DIR.parent.parent
 README_PATH = REPO_ROOT / "README.md"
 OUTPUT_PATH = SCRIPT_DIR / "index.html"
 REPO_SLUG   = os.environ.get("GITHUB_REPOSITORY", "donnyakusuma/ikuti-gerakmu")  # GitHub "owner/repo" (set automatically in Actions)
+UPSTREAM_SLUG = os.environ.get("UPSTREAM_SLUG", "davidpagnon/Sports2D")  # original project: its releases are listed too
+RAW_SLUG    = os.environ.get("RAW_SLUG", REPO_SLUG)  # repo serving raw images (use a public one if REPO_SLUG is private)
 DOC_NAME    = "Ikuti Gerakmu"            # shown in page titles
 VERSIONS_DIR = SCRIPT_DIR / "v"          # one sub-folder per release
 VERSIONS_URL = "v"
@@ -47,7 +49,7 @@ VERSIONS_URL = "v"
 
 def raw_base(ref: str) -> str:
     """Base URL for raw files (images...) at a given branch / tag / commit."""
-    return f"https://raw.githubusercontent.com/{REPO_SLUG}/{ref}/"
+    return f"https://raw.githubusercontent.com/{RAW_SLUG}/{ref}/"
 
 try:
     import pymdownx  # noqa: F401
@@ -475,21 +477,39 @@ def fetch_releases(include_prereleases: bool = False) -> list[dict]:
     if token:
         headers["Authorization"] = f"Bearer {token}"
 
-    releases, page = [], 1
-    while True:
-        url = f"https://api.github.com/repos/{REPO_SLUG}/releases?per_page=100&page={page}"
-        req = urllib.request.Request(url, headers=headers)
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            batch = json.load(resp)
-        if not batch:
-            break
-        releases += batch
-        page += 1
+    def list_repo(slug: str) -> list[dict]:
+        found, page = [], 1
+        while True:
+            url = f"https://api.github.com/repos/{slug}/releases?per_page=100&page={page}"
+            req = urllib.request.Request(url, headers=headers)
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                batch = json.load(resp)
+            if not batch:
+                break
+            found += batch
+            page += 1
+        return found
 
-    out = []
+    # This repo's own releases first, then the upstream ones (same tag: ours wins)
+    releases, errors = [], []
+    for slug in dict.fromkeys([REPO_SLUG, UPSTREAM_SLUG]):
+        if not slug:
+            continue
+        try:
+            releases += list_repo(slug)
+        except Exception as exc:
+            errors.append(f"{slug}: {exc}")
+            print(f"WARNING: could not list releases of {slug} ({exc})", file=sys.stderr)
+    if errors and not releases:
+        raise RuntimeError("; ".join(errors))
+
+    out, seen = [], set()
     for r in releases:
         if r.get("draft") or (r.get("prerelease") and not include_prereleases):
             continue
+        if r["tag_name"] in seen:
+            continue
+        seen.add(r["tag_name"])
         out.append({
             "tag":  r["tag_name"],
             "date": r["published_at"],            # ISO 8601, UTC

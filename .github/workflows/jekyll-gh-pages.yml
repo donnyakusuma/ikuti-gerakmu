@@ -43,6 +43,15 @@ jobs:
           python-version: '3.13'
       - name: Install markdown libraries
         run: pip install markdown pymdown-extensions
+      - name: Pick image source (private repos cannot serve raw images publicly)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "$(gh api "repos/$GITHUB_REPOSITORY" --jq .private)" = "true" ]; then
+            echo "RAW_SLUG=davidpagnon/Sports2D" >> "$GITHUB_ENV"
+          else
+            echo "RAW_SLUG=$GITHUB_REPOSITORY" >> "$GITHUB_ENV"
+          fi
       - name: Generate index.html (latest) and v/<tag>/index.html (releases) from README.md
         run: python Content/website/build.py
         env:
