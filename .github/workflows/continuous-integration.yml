@@ -60,5 +60,17 @@ jobs:
           PYTHONIOENCODING: utf-8
           PYTHONUNBUFFERED: "1"
           KMP_DUPLICATE_LIB_OK: TRUE
+        shell: bash
         run: |
-          uv run --no-project pytest -v Sports2D/Utilities/tests.py --capture=sys
+          # Some GitHub Windows runners have CPUs that OpenVINO's native code does not support
+          # ("Windows fatal exception: code 0xc000001d" = illegal instruction). That crash depends
+          # on which machine the job lands on, so only in that case the tests are run once more.
+          set +e
+          uv run --no-project pytest -v Sports2D/Utilities/tests.py --capture=sys 2>&1 | tee pytest.log
+          status=${PIPESTATUS[0]}
+          if [ "$status" -ne 0 ] && grep -q "code 0xc000001d" pytest.log; then
+            echo "::warning::OpenVINO illegal-instruction crash on this runner CPU; retrying the tests once."
+            uv run --no-project pytest -v Sports2D/Utilities/tests.py --capture=sys
+            status=$?
+          fi
+          exit $status
