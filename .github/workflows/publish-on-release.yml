@@ -11,10 +11,11 @@ name: Upload Python Package to PyPi upon release
 on:
   release:
     types: [published]
-  workflow_dispatch:   # manual run: builds the package (uploads only if PYPI_API_TOKEN is set)
+  workflow_dispatch:   # manual run: only builds the package (no upload)
 
 permissions:
   contents: read
+  id-token: write   # PyPI Trusted Publishing (OIDC), no token needed
 
 jobs:
   deploy:
@@ -32,7 +33,7 @@ jobs:
       id: token
       run: |
         if [ -z "$PYPI_API_TOKEN" ]; then
-          echo "::warning::Secret PYPI_API_TOKEN is not set: building the package but skipping the PyPI upload."
+          echo "No PYPI_API_TOKEN secret: a release will publish through PyPI Trusted Publishing."
           echo "present=false" >> "$GITHUB_OUTPUT"
         else
           echo "present=true" >> "$GITHUB_OUTPUT"
@@ -52,9 +53,12 @@ jobs:
       with:
         name: dist
         path: dist/
-    - name: Publish package
-      if: steps.token.outputs.present == 'true'
+    - name: Publish package (API token)
+      if: github.event_name == 'release' && steps.token.outputs.present == 'true'
       uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
       with:
         user: __token__
         password: ${{ secrets.PYPI_API_TOKEN }}
+    - name: Publish package (Trusted Publishing)
+      if: github.event_name == 'release' && steps.token.outputs.present != 'true'
+      uses: pypa/gh-action-pypi-publish@aef6c9b6e301dc803e1bc9133e9ce67ae9b0906b  # v1.14.3 (Trusted Publishing needs >= v1.8)
