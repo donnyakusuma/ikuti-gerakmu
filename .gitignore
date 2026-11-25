@@ -1,0 +1,12 @@
+**/__pycache__/
+**/build/
+*.pyc
+logs.txt*
+**/*.log
+*.egg-info/
+dist/
+demo_Sports2D/**
+**/Demo/*.jpg
+
+Content/website/index.html
+Content/website/v/
